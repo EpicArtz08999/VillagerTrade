@@ -16,10 +16,10 @@ use pocketmine\entity\Villager;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntitySpawnEvent;
 use pocketmine\entity\Entity;
-use pocketmine\nbt\tag\Compound;
-use pocketmine\nbt\tag\Enum;
-use pocketmine\nbt\tag\String;
-use pocketmine\nbt\tag\Int;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\ListTag;
+use pocketmine\nbt\tag\StringTag;
+use pocketmine\nbt\tag\IntTag;
 use pocketmine\tile\Tile;
 use pocketmine\item\Item;
 use pocketmine\command\CommandSender;
@@ -155,10 +155,10 @@ class Main extends PluginBase implements Listener{
 		$this->getVillagerConfig();
 		$villager->getLevel()->setBlockIdAt($villager->x, $villager->y, $villager->z, Block::HOPPER);
 		
-		$nbt = new Compound("", [new Enum("Items", []), new String("id", Tile::HOPPER), new Int("x", $villager->x), new Int("y", $villager->y), new Int("z", $villager->z)]);
+		$nbt = new CompoundTag("", [new ListTag("Items", []), new StringTag("id", Tile::HOPPER), new IntTag("x", $villager->x), new IntTag("y", $villager->y), new IntTag("z", $villager->z)]);
 		$nbt->Items->setTagType(NBT::TAG_Compound);
 		
-		$nbt->CustomName = new String("CustomName", "Trade");
+		$nbt->CustomName = new StringTag("CustomName", "Trade");
 		$tile2 = new VillagerTile($villager->getLevel()->getChunk($villager->x >> 4, $villager->z >> 4), $nbt);
 		$items = array_keys($this->profession->getNested($villager->getNameTag() . ".items"));
 		$this->fakeChest = $tile2;
